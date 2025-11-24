@@ -3568,6 +3568,9 @@ class Agent:
             run_response.citations = model_response.citations
         if model_response.provider_data is not None:
             run_response.model_provider_data = model_response.provider_data
+        # Update context management/editing response if present (from Claude API)
+        if model_response.context_management is not None:
+            run_response.context_management = model_response.context_management
 
         # Update the run_response tools with the model response tool_executions
         if model_response.tool_executions is not None:
@@ -3826,6 +3829,10 @@ class Agent:
                 if model_response_event.citations is not None:
                     run_response.citations = model_response_event.citations
 
+                # Handle context management/editing response (from Claude API)
+                if model_response_event.context_management is not None:
+                    run_response.context_management = model_response_event.context_management
+
                 # Only yield if we have content to show
                 if content_type != "str":
                     yield self._handle_event(
@@ -3842,6 +3849,7 @@ class Agent:
                     or model_response_event.redacted_reasoning_content is not None
                     or model_response_event.citations is not None
                     or model_response_event.provider_data is not None
+                    or model_response_event.context_management is not None
                 ):
                     yield self._handle_event(
                         create_run_output_content_event(
@@ -3851,6 +3859,7 @@ class Agent:
                             redacted_reasoning_content=model_response_event.redacted_reasoning_content,
                             citations=model_response_event.citations,
                             model_provider_data=model_response_event.provider_data,
+                            context_management=model_response_event.context_management,
                         ),
                         run_response,
                     )

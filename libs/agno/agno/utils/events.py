@@ -107,6 +107,7 @@ def create_run_completed_event(from_run_response: RunOutput) -> RunCompletedEven
         reasoning_content=from_run_response.reasoning_content,  # type: ignore
         citations=from_run_response.citations,  # type: ignore
         model_provider_data=from_run_response.model_provider_data,  # type: ignore
+        context_management=from_run_response.context_management,  # type: ignore
         images=from_run_response.images,  # type: ignore
         videos=from_run_response.videos,  # type: ignore
         audio=from_run_response.audio,  # type: ignore
@@ -411,6 +412,7 @@ def create_run_output_content_event(
     reasoning_content: Optional[str] = None,
     redacted_reasoning_content: Optional[str] = None,
     model_provider_data: Optional[Dict[str, Any]] = None,
+    context_management: Optional[Dict[str, Any]] = None,
     citations: Optional[Citations] = None,
     response_audio: Optional[Audio] = None,
     image: Optional[Image] = None,
@@ -426,6 +428,7 @@ def create_run_output_content_event(
         content_type=content_type or "str",
         reasoning_content=thinking_combined,
         citations=citations,
+        context_management=context_management,
         response_audio=response_audio,
         image=image,
         references=from_run_response.references,

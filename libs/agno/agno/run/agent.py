@@ -191,6 +191,7 @@ class RunContentEvent(BaseAgentRunEvent):
     content_type: str = "str"
     reasoning_content: Optional[str] = None
     model_provider_data: Optional[Dict[str, Any]] = None
+    context_management: Optional[Dict[str, Any]] = None  # Context editing response from Claude API
     citations: Optional[Citations] = None
     response_audio: Optional[Audio] = None  # Model audio response
     image: Optional[Image] = None  # Image attached to the response
@@ -215,6 +216,7 @@ class RunCompletedEvent(BaseAgentRunEvent):
     reasoning_content: Optional[str] = None
     citations: Optional[Citations] = None
     model_provider_data: Optional[Dict[str, Any]] = None
+    context_management: Optional[Dict[str, Any]] = None  # Context editing response from Claude API
     images: Optional[List[Image]] = None  # Images attached to the response
     videos: Optional[List[Video]] = None  # Videos attached to the response
     audio: Optional[List[Audio]] = None  # Audio attached to the response
@@ -432,6 +434,10 @@ class RunOutput:
     reasoning_messages: Optional[List[Message]] = None
 
     model_provider_data: Optional[Dict[str, Any]] = None
+
+    # Context management/editing response from Claude API
+    # Contains applied_edits with cleared_input_tokens, cleared_tool_uses, cleared_thinking_turns, etc.
+    context_management: Optional[Dict[str, Any]] = None
 
     model: Optional[str] = None
     model_provider: Optional[str] = None

@@ -505,6 +505,11 @@ class Claude(Model):
         if response.usage is not None:
             model_response.response_usage = self._get_metrics(response.usage)
 
+        # Extract context management/editing response if present
+        # This contains applied_edits with cleared_input_tokens, cleared_tool_uses, cleared_thinking_turns, etc.
+        if hasattr(response, "context_management") and response.context_management is not None:
+            model_response.context_management = response.context_management.model_dump() if hasattr(response.context_management, "model_dump") else response.context_management  # type: ignore
+
         return model_response
 
     def _parse_provider_response_delta(
@@ -585,6 +590,11 @@ class Claude(Model):
 
         if hasattr(response, "message") and hasattr(response.message, "usage") and response.message.usage is not None:  # type: ignore
             model_response.response_usage = self._get_metrics(response.message.usage)  # type: ignore
+
+        # Extract context management/editing response if present (available in MessageStopEvent)
+        # This contains applied_edits with cleared_input_tokens, cleared_tool_uses, cleared_thinking_turns, etc.
+        if hasattr(response, "message") and hasattr(response.message, "context_management") and response.message.context_management is not None:  # type: ignore
+            model_response.context_management = response.message.context_management.model_dump() if hasattr(response.message.context_management, "model_dump") else response.message.context_management  # type: ignore
 
         # Capture the Beta response
         try:

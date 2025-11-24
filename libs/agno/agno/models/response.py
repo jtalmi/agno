@@ -117,6 +117,10 @@ class ModelResponse:
 
     response_usage: Optional[Metrics] = None
 
+    # Context management/editing response from Claude API
+    # Contains applied_edits with cleared_input_tokens, cleared_tool_uses, cleared_thinking_turns, etc.
+    context_management: Optional[Dict[str, Any]] = None
+
     created_at: int = int(time())
 
     extra: Optional[Dict[str, Any]] = None
